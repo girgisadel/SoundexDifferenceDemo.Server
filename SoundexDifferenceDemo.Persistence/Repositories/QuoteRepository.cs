@@ -102,7 +102,7 @@ public class QuoteRepository<TQuote>(DatabaseContext context) : IQuoteRepository
         return Task.FromResult(quote.Id);
     }
 
-    public virtual async Task<IReadOnlyList<TQuote>> JustGetQuotesBySpecificationAsync(IPaginationSpecification<TQuote> specification,
+    public virtual async Task<IReadOnlyList<TQuote>> GetQuotesByPaginationSpecificationAsync(IPaginationSpecification<TQuote> specification,
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -112,7 +112,7 @@ public class QuoteRepository<TQuote>(DatabaseContext context) : IQuoteRepository
             .ToListAsync(cancellationToken);
     }
 
-    public virtual IQueryable<TQuote> JustDeferredGetQuotesByPaginationSpecification(IPaginationSpecification<TQuote> specification,
+    public virtual IQueryable<TQuote> DeferredGetQuotesByPaginationSpecification(IPaginationSpecification<TQuote> specification,
       CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -121,7 +121,7 @@ public class QuoteRepository<TQuote>(DatabaseContext context) : IQuoteRepository
         return PaginationSpecificationEvaluator<TQuote>.GetQuery(Quotes.AsNoTracking(), specification);
     }
 
-    public virtual IQueryable<TQuote> JustDeferredGetQuotesBySpecification(ISpecification<TQuote> specification, CancellationToken cancellationToken = default)
+    public virtual IQueryable<TQuote> DeferredGetQuotesBySpecification(ISpecification<TQuote> specification, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         ThrowIfDisposed();
@@ -129,7 +129,7 @@ public class QuoteRepository<TQuote>(DatabaseContext context) : IQuoteRepository
         return SpecificationEvaluator<TQuote>.GetQuery(Quotes.AsNoTracking(), specification);
     }
 
-    public virtual async Task<long> JustCountQuotesBySpecificationAsync(ISpecification<TQuote> specification, 
+    public virtual async Task<long> CountQuotesBySpecificationAsync(ISpecification<TQuote> specification, 
         CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -195,14 +195,14 @@ public class QuoteRepository<TQuote>(DatabaseContext context) : IQuoteRepository
         return AppResult.Success();
     }
 
-    public virtual Task<TQuote?> JustFindByIdAsync(string quoteId, CancellationToken cancellationToken = default)
+    public virtual Task<TQuote?> GetByIdAsync(string quoteId, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         ThrowIfDisposed();
         return QuotesSet.AsNoTracking().FirstOrDefaultAsync(q => q.Id == quoteId, cancellationToken = default);
     }
 
-    public virtual Task<TQuote?> JustFindByTextAsync(string text, CancellationToken cancellationToken)
+    public virtual Task<TQuote?> GetByTextAsync(string text, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         ThrowIfDisposed();

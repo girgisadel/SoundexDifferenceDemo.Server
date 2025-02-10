@@ -11,7 +11,7 @@ internal class FreeTextSearchFilterQuotesCommandHandler(IQuoteManager<Quote> man
 {
     public async Task<AppResult<PaginatedResult<QuoteItem>>> Handle(FreeTextSearchFilterQuotesCommand request, CancellationToken cancellationToken)
     {
-        var items = await manager.JustDeferredFreeTextSearchFilterQuotes(request.SearchTerm?.Trim(),
+        var items = await manager.DeferredFreeTextSearchFilterQuotesByText(request.SearchTerm?.Trim(),
             request.Page,
             request.PageSize,
             request.CreatedAtFrom,
@@ -26,7 +26,7 @@ internal class FreeTextSearchFilterQuotesCommandHandler(IQuoteManager<Quote> man
             })
             .ToListAsync(cancellationToken);
 
-        var count = await manager.JustCountFreeTextSearchFilteredQuotesAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
+        var count = await manager.CountFreeTextSearchFilteredQuotesByTextAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
 
         return new PaginatedResult<QuoteItem>(items, items.Count, count, request.Page, request.PageSize);
     }

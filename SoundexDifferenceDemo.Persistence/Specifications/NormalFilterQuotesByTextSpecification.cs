@@ -3,9 +3,9 @@ using SoundexDifferenceDemo.SharedKernel;
 
 namespace SoundexDifferenceDemo.Persistence.Specifications;
 
-public class NormalTextFilterQuotesSpecification<TQuote> : Specification<TQuote> where TQuote : Quote
+public class NormalFilterQuotesByTextSpecification<TQuote> : Specification<TQuote> where TQuote : Quote
 {
-    public NormalTextFilterQuotesSpecification(string? searchTerm, DateTime? from, DateTime? to)
+    public NormalFilterQuotesByTextSpecification(string? searchTerm, DateTime? from, DateTime? to)
     {
         if (!string.IsNullOrEmpty(searchTerm))
         {

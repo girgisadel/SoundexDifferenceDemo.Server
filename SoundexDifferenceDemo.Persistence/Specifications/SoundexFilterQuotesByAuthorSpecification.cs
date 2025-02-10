@@ -4,9 +4,9 @@ using SoundexDifferenceDemo.SharedKernel;
 
 namespace SoundexDifferenceDemo.Persistence.Specifications;
 
-public class AuthorSoundexFilterQuotesSpecification<TQuote> : Specification<TQuote> where TQuote : Quote
+public class SoundexFilterQuotesByAuthorSpecification<TQuote> : Specification<TQuote> where TQuote : Quote
 {
-    public AuthorSoundexFilterQuotesSpecification(string? normalizedSearchTerm, DateTime? from, DateTime? to)
+    public SoundexFilterQuotesByAuthorSpecification(string? normalizedSearchTerm, DateTime? from, DateTime? to)
     {
         if (!string.IsNullOrEmpty(normalizedSearchTerm))
         {

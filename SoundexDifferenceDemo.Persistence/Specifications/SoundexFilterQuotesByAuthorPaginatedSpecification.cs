@@ -1,13 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SoundexDifferenceDemo.Domain.Quotes;
+﻿using SoundexDifferenceDemo.Domain.Quotes;
 using SoundexDifferenceDemo.Infrastructure.Contexts;
 using SoundexDifferenceDemo.SharedKernel;
 
 namespace SoundexDifferenceDemo.Persistence.Specifications;
 
-public class AuthorSoundexFilterQuotesPaginatedSpecification<TQuote> : PaginationSpecification<TQuote> where TQuote : Quote
+public class SoundexFilterQuotesByAuthorPaginatedSpecification<TQuote> : PaginationSpecification<TQuote> where TQuote : Quote
 {
-    public AuthorSoundexFilterQuotesPaginatedSpecification(string? normalizedSearchTerm,
+    public SoundexFilterQuotesByAuthorPaginatedSpecification(string? normalizedSearchTerm,
         int page, int pageSize,
         DateTime? from, DateTime? to,
         string OrderBy,

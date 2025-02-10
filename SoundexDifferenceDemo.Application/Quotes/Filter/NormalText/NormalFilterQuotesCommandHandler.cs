@@ -11,7 +11,7 @@ internal class NormalFilterQuotesCommandHandler(IQuoteManager<Quote> manager) : 
 {
     public async Task<AppResult<PaginatedResult<QuoteItem>>> Handle(NormalFilterQuotesCommand request, CancellationToken cancellationToken)
     {
-        var items = await manager.JustDeferredNormalTextFilterQuotes(request.SearchTerm?.Trim(),
+        var items = await manager.DeferredNormalFilterQuotesByText(request.SearchTerm?.Trim(),
             request.Page,
             request.PageSize,
             request.CreatedAtFrom,
@@ -26,7 +26,7 @@ internal class NormalFilterQuotesCommandHandler(IQuoteManager<Quote> manager) : 
             })
             .ToListAsync(cancellationToken);
 
-        var count = await manager.JustCountNormalTextFilteredQuotesAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
+        var count = await manager.CountNormalTextFilteredQuotesByTextAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
 
         return new PaginatedResult<QuoteItem>(items, items.Count, count, request.Page, request.PageSize);
     }

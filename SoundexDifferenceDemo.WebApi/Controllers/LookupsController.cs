@@ -48,8 +48,8 @@ public class LookupsController(IQuoteManager<Quote> manager) : ControllerBase
 
         validator.ValidateAndThrow(searchTerm);
 
-        var items = await manager.JustDeferredGetAuthorsSoundexAsync(searchTerm).Select(e => e.Author).ToListAsync();
+        var items = await manager.DeferredGetAuthorsByAuthorSoundexAsync(searchTerm).Distinct().ToListAsync();
 
-        return Ok(items.Distinct().Select(e => new LookupResponse<string>(e!, e!)).ToList());
+        return Ok(items.Select(e => new LookupResponse<string>(e!, e!)).ToList());
    }
 }

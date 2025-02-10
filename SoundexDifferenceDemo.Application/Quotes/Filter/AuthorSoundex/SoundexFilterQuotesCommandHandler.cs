@@ -11,7 +11,7 @@ internal class SoundexFilterQuotesCommandHandler(IQuoteManager<Quote> manager) :
 {
     public async Task<AppResult<PaginatedResult<QuoteItem>>> Handle(SoundexFilterQuotesCommand request, CancellationToken cancellationToken)
     {
-        var items = await manager.JustDeferredAuthorSoundexFilterQuotes(request.SearchTerm?.Trim(),
+        var items = await manager.DeferredSoundexFilterQuotesByAuthor(request.SearchTerm?.Trim(),
             request.Page,
             request.PageSize,
             request.CreatedAtFrom,
@@ -26,7 +26,7 @@ internal class SoundexFilterQuotesCommandHandler(IQuoteManager<Quote> manager) :
             })
             .ToListAsync(cancellationToken);
 
-        var count = await manager.JustCountAuthorSoundexFilteredQuotesAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
+        var count = await manager.CountSoundexFilteredQuotesByAuthorAsync(request.SearchTerm?.Trim(), request.CreatedAtFrom, request.CreatedAtTo);
 
         return new PaginatedResult<QuoteItem>(items, items.Count, count, request.Page, request.PageSize);
     }

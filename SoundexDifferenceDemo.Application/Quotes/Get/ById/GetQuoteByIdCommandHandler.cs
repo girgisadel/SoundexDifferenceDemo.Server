@@ -10,7 +10,7 @@ internal class GetQuoteByIdCommandHandler(IQuoteManager<Quote> manager) : IComma
 {
     public async Task<AppResult<QuoteItem>> Handle(GetQuoteByIdCommand request, CancellationToken cancellationToken)
     {
-        var quote = await manager.JustFindByIdAsync(request.Id);
+        var quote = await manager.GetByIdAsync(request.Id);
         if (quote is null)
         {
             return AppResult<QuoteItem>.Failure(new AppError("QuoteNotFound",

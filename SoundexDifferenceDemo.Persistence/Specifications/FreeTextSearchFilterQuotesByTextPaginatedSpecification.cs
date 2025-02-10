@@ -1,19 +1,21 @@
-﻿using SoundexDifferenceDemo.Domain.Quotes;
+﻿using Microsoft.EntityFrameworkCore;
+using SoundexDifferenceDemo.Domain.Quotes;
 using SoundexDifferenceDemo.SharedKernel;
 
 namespace SoundexDifferenceDemo.Persistence.Specifications;
 
-public class NormalTextFilterQuotesPaginatedSpecification<TQuote> : PaginationSpecification<TQuote> where TQuote : Quote
+public class FreeTextSearchFilterQuotesByTextPaginatedSpecification<TQuote> : PaginationSpecification<TQuote> where TQuote : Quote
 {
-    public NormalTextFilterQuotesPaginatedSpecification(string? searchTerm,
-        int page, int pageSize, 
-        DateTime? from, DateTime? to, 
-        string OrderBy, 
+    public FreeTextSearchFilterQuotesByTextPaginatedSpecification(
+        string? searchTerm,
+        int page, int pageSize,
+        DateTime? from, DateTime? to,
+        string OrderBy,
         bool IsDescending)
     {
         if (!string.IsNullOrEmpty(searchTerm))
         {
-            AddCriterion(x => !string.IsNullOrEmpty(searchTerm) && !string.IsNullOrEmpty(x.Text) && x.Text.Contains(searchTerm));
+            AddCriterion(x => !string.IsNullOrEmpty(x.Text) && EF.Functions.FreeText(x.Text, searchTerm));
         }
 
         if (from.HasValue)

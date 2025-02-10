@@ -112,73 +112,74 @@ public class QuoteManager<TQuote> : IQuoteManager<TQuote>
             .ConfigureAwait(false);
     }
 
-    public virtual async Task<IReadOnlyList<TQuote>> JustNormalTextFilterQuotesAsync(string? searchTerm, int page, int pageSize,
+    public virtual async Task<IReadOnlyList<TQuote>> NormalFilterQuotesByTextAsync(string? searchTerm, int page, int pageSize,
         DateTime? from, DateTime? to, string orderBy, bool isDescending)
-        => await JustDeferredNormalTextFilterQuotes(searchTerm, page, pageSize, from, to, orderBy, isDescending).ToListAsync(CancellationToken);
+        => await DeferredNormalFilterQuotesByText(searchTerm, page, pageSize, from, to, orderBy, isDescending).ToListAsync(CancellationToken);
 
-    public virtual IQueryable<TQuote> JustDeferredNormalTextFilterQuotes(string? searchTerm, int page, int pageSize, 
-        DateTime? from, DateTime? to, string orderBy, bool isDescending)
-    {
-        ThrowIfDisposed();
-        ArgumentNullException.ThrowIfNull(orderBy);
-        page = page <= 0 ? Constants.DefaultPage : page;
-        pageSize = pageSize <= 0 ? Constants.DefaultPageSize : pageSize;
-        var itemsSpecification = new NormalTextFilterQuotesPaginatedSpecification<TQuote>(searchTerm, page, pageSize, from, to, orderBy, isDescending);
-        return Repository.JustDeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
-    }
-
-    public virtual IQueryable<TQuote> JustDeferredFreeTextSearchFilterQuotes(string? searchTerm, int page, int pageSize,
+    public virtual IQueryable<TQuote> DeferredNormalFilterQuotesByText(string? searchTerm, int page, int pageSize, 
         DateTime? from, DateTime? to, string orderBy, bool isDescending)
     {
         ThrowIfDisposed();
         ArgumentNullException.ThrowIfNull(orderBy);
         page = page <= 0 ? Constants.DefaultPage : page;
         pageSize = pageSize <= 0 ? Constants.DefaultPageSize : pageSize;
-        var itemsSpecification = new FreeTextSearchFilterQuotesPaginatedSpecification<TQuote>(searchTerm, page, pageSize, from, to, orderBy, isDescending);
-        return Repository.JustDeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
+        var itemsSpecification = new NormalFilterQuotesByTextPaginatedSpecification<TQuote>(searchTerm, page, pageSize, from, to, orderBy, isDescending);
+        return Repository.DeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
     }
 
-    public virtual async Task<long> JustCountNormalTextFilteredQuotesAsync(string? searchTerm, DateTime? from, DateTime? to)
-    {
-        ThrowIfDisposed();
-        var countSpecification = new NormalTextFilterQuotesSpecification<TQuote>(searchTerm, from, to);
-        return await Repository.JustCountQuotesBySpecificationAsync(countSpecification, CancellationToken);
-    }
-
-    public virtual async Task<long> JustCountFreeTextSearchFilteredQuotesAsync(string? searchTerm, DateTime? from, DateTime? to)
-    {
-        ThrowIfDisposed();
-        var countSpecification = new FreeTextSearchFilterQuotesSpecification<TQuote>(searchTerm, from, to);
-        return await Repository.JustCountQuotesBySpecificationAsync(countSpecification, CancellationToken);
-    }
-
-    public virtual async Task<IReadOnlyList<TQuote>> JustAuthorSoundexFilterQuotesAsync(string? searchTerm, int page, int pageSize, 
+    public virtual IQueryable<TQuote> DeferredFreeTextSearchFilterQuotesByText(string? searchTerm, int page, int pageSize,
         DateTime? from, DateTime? to, string orderBy, bool isDescending)
-        => await JustDeferredAuthorSoundexFilterQuotes(searchTerm, page, pageSize, from, to, orderBy, isDescending).ToListAsync(CancellationToken);
+    {
+        ThrowIfDisposed();
+        ArgumentNullException.ThrowIfNull(orderBy);
+        page = page <= 0 ? Constants.DefaultPage : page;
+        pageSize = pageSize <= 0 ? Constants.DefaultPageSize : pageSize;
+        var itemsSpecification = new FreeTextSearchFilterQuotesByTextPaginatedSpecification<TQuote>(searchTerm, page, pageSize, from, to, orderBy, isDescending);
+        return Repository.DeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
+    }
 
-    public virtual IQueryable<TQuote> JustDeferredGetAuthorsSoundexAsync(string searchTerm)
+    public virtual async Task<long> CountNormalTextFilteredQuotesByTextAsync(string? searchTerm, DateTime? from, DateTime? to)
+    {
+        ThrowIfDisposed();
+        var countSpecification = new NormalFilterQuotesByTextSpecification<TQuote>(searchTerm, from, to);
+        return await Repository.CountQuotesBySpecificationAsync(countSpecification, CancellationToken);
+    }
+
+    public virtual async Task<long> CountFreeTextSearchFilteredQuotesByTextAsync(string? searchTerm, DateTime? from, DateTime? to)
+    {
+        ThrowIfDisposed();
+        var countSpecification = new FreeTextSearchFilterQuotesByTextSpecification<TQuote>(searchTerm, from, to);
+        return await Repository.CountQuotesBySpecificationAsync(countSpecification, CancellationToken);
+    }
+
+    public virtual async Task<IReadOnlyList<TQuote>> SoundexFilterQuotesByAuthorAsync(string? searchTerm, int page, int pageSize, 
+        DateTime? from, DateTime? to, string orderBy, bool isDescending)
+        => await DeferredSoundexFilterQuotesByAuthor(searchTerm, page, pageSize, from, to, orderBy, isDescending).ToListAsync(CancellationToken);
+
+    public virtual IQueryable<string> DeferredGetAuthorsByAuthorSoundexAsync(string searchTerm)
     {
         ArgumentNullException.ThrowIfNull(searchTerm);
-        var itemsSpecification = new GetAuthorsSoundexSpecification<TQuote>(NormalizeAuthor(searchTerm));
-        return Repository.JustDeferredGetQuotesBySpecification(itemsSpecification, CancellationToken);
+        var itemsSpecification = new GetAuthorsByAuthorSoundexSpecification<TQuote>(NormalizeAuthor(searchTerm));
+        return Repository.DeferredGetQuotesBySpecification(itemsSpecification, CancellationToken)
+            .Select(q => q.Author!);
     }
 
-    public virtual IQueryable<TQuote> JustDeferredAuthorSoundexFilterQuotes(string? searchTerm, int page, int pageSize,
+    public virtual IQueryable<TQuote> DeferredSoundexFilterQuotesByAuthor(string? searchTerm, int page, int pageSize,
         DateTime? from, DateTime? to, string orderBy, bool isDescending)
     {
         ThrowIfDisposed();
         ArgumentNullException.ThrowIfNull(orderBy);
         page = page <= 0 ? Constants.DefaultPage : page;
         pageSize = pageSize <= 0 ? Constants.DefaultPageSize : pageSize;
-        var itemsSpecification = new AuthorSoundexFilterQuotesPaginatedSpecification<TQuote>(NormalizeAuthor(searchTerm), page, pageSize, from, to, orderBy, isDescending);
-        return Repository.JustDeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
+        var itemsSpecification = new SoundexFilterQuotesByAuthorPaginatedSpecification<TQuote>(NormalizeAuthor(searchTerm), page, pageSize, from, to, orderBy, isDescending);
+        return Repository.DeferredGetQuotesByPaginationSpecification(itemsSpecification, CancellationToken);
     }
 
-    public virtual async Task<long> JustCountAuthorSoundexFilteredQuotesAsync(string? searchTerm, DateTime? from, DateTime? to)
+    public virtual async Task<long> CountSoundexFilteredQuotesByAuthorAsync(string? searchTerm, DateTime? from, DateTime? to)
     {
         ThrowIfDisposed();
-        var countSpecification = new AuthorSoundexFilterQuotesSpecification<TQuote>(NormalizeAuthor(searchTerm), from, to);
-        return await Repository.JustCountQuotesBySpecificationAsync(countSpecification, CancellationToken);
+        var countSpecification = new SoundexFilterQuotesByAuthorSpecification<TQuote>(NormalizeAuthor(searchTerm), from, to);
+        return await Repository.CountQuotesBySpecificationAsync(countSpecification, CancellationToken);
     }
 
     public virtual Task<string?> GetTextAsync(TQuote quote)
@@ -240,16 +241,16 @@ public class QuoteManager<TQuote> : IQuoteManager<TQuote>
         return AppResult.Success();
     }
 
-    public virtual Task<TQuote?> JustFindByIdAsync(string quoteId)
+    public virtual Task<TQuote?> GetByIdAsync(string quoteId)
     {
         ThrowIfDisposed();
-        return Repository.JustFindByIdAsync(quoteId, CancellationToken);
+        return Repository.GetByIdAsync(quoteId, CancellationToken);
     }
 
-    public virtual Task<TQuote?> JustFindByTextAsync(string text)
+    public virtual Task<TQuote?> GetByTextAsync(string text)
     {
         ThrowIfDisposed();
-        return Repository.JustFindByTextAsync(text, CancellationToken);
+        return Repository.GetByTextAsync(text, CancellationToken);
     }
 
     public virtual async Task UpdateNormalizedAuthorAsync(TQuote quote)

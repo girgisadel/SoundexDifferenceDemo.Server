@@ -38,7 +38,7 @@ public class QuoteValidator<TQuote> : IQuoteValidator<TQuote> where TQuote : Quo
         }
         else
         {
-            var owner = await manager.JustFindByTextAsync(text).ConfigureAwait(false);
+            var owner = await manager.GetByTextAsync(text).ConfigureAwait(false);
             if (owner != null &&
                 !string.Equals(await manager.GetIdAsync(owner).ConfigureAwait(false),
                 await manager.GetIdAsync(quot).ConfigureAwait(false)))
