@@ -5,17 +5,15 @@ using SoundexDifferenceDemo.Domain.Quotes;
 using SoundexDifferenceDemo.Infrastructure;
 using SoundexDifferenceDemo.Infrastructure.Contexts;
 using SoundexDifferenceDemo.Persistence;
+using SoundexDifferenceDemo.WebApi.Models;
+using System.Text.Json;
 
 namespace SoundexDifferenceDemo.WebApi;
 
-public class QuoteDto
-{
-    public string Author { get; set; } = default!;
-    public List<string> Quotes { get; set; } = default!;
-}
-
 public class Program
 {
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -42,37 +40,37 @@ public class Program
         {
             using var identityDatabase = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("InTesting")))
+            await identityDatabase.Database.MigrateAsync();
+
+            if (app.Environment.IsDevelopment() && !await identityDatabase.Quotes.AnyAsync())
             {
-                await identityDatabase.Database.MigrateAsync();
-            }
+                var quotesFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "quotes.json");
 
-            if (app.Environment.IsDevelopment() && string.IsNullOrEmpty(Environment.GetEnvironmentVariable("InTesting"))
-                && !await identityDatabase.Quotes.AnyAsync())
-            {
-                var faker = new Faker();
-                var quoteFaker = new Faker<QuoteDto>()
-                    .RuleFor(q => q.Author, f => f.Name.FullName())
-                    .RuleFor(q => q.Quotes, f => Enumerable.Range(1, f.Random.Int(1, 99))
-                    .Select(_ => f.Lorem.Sentence())
-                    .ToList());
-
-                var fakeQuotes = quoteFaker.Generate(1000);
-
-                var quotes = fakeQuotes.SelectMany(q => q.Quotes.Select(quote => new Quote
+                if (File.Exists(quotesFilePath))
                 {
-                    Author = q.Author,
-                    Text = quote,
-                    NormalizedAuthor = q.Author.Normalize().ToLowerInvariant(),
-                    CreatedAt = DateTime.UtcNow
-                    .AddDays(-faker.Random.Int(1, 730))
-                    .AddHours(-faker.Random.Int(1, 24))
-                    .AddMinutes(-faker.Random.Int(1, 60))
-                    .AddSeconds(-faker.Random.Int(1, 60))
-                })).DistinctBy(q => q.Text);
+                    var json = await File.ReadAllTextAsync(quotesFilePath);
+                    var quoteSeedItems = JsonSerializer.Deserialize<List<QuoteSeedItem>>(json, JsonSerializerOptions)?.DistinctBy(q => q.Quote);
 
-                await identityDatabase.Quotes.AddRangeAsync(quotes);
-                await identityDatabase.SaveChangesAsync();
+                    if (quoteSeedItems != null)
+                    {
+                        var faker = new Faker();
+                        
+                        var quotes = quoteSeedItems.Select(q => new Quote
+                        {
+                            Author = q.Author,
+                            Text = q.Quote,
+                            NormalizedAuthor = q.Author?.Normalize().ToLowerInvariant(),
+                            CreatedAt = DateTime.UtcNow
+                            .AddDays(-faker.Random.Int(1, 730))
+                            .AddHours(-faker.Random.Int(1, 48))
+                            .AddMinutes(-faker.Random.Int(1, 120))
+                            .AddSeconds(-faker.Random.Int(1, 120))
+                        });
+
+                        await identityDatabase.Quotes.AddRangeAsync(quotes);
+                        await identityDatabase.SaveChangesAsync();
+                    }
+                }
             }
         }
         catch (Exception ex)

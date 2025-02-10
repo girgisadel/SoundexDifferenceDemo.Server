@@ -16,9 +16,9 @@ namespace SoundexDifferenceDemo.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Text = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Author = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
-                    NormalizedAuthor = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true),
+                    Text = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: true),
+                    Author = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedAuthor = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

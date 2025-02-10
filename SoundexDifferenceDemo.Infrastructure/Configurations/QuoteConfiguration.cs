@@ -10,10 +10,10 @@ internal class QuoteConfiguration : IEntityTypeConfiguration<Quote>
     {
         builder.HasKey(e => e.Id);
 
-        builder.Property(e => e.Text).HasMaxLength(256);
+        builder.Property(e => e.Text).HasMaxLength(1024);
 
-        builder.Property(e => e.Author).HasMaxLength(32);
-        builder.Property(e => e.NormalizedAuthor).HasMaxLength(32);
+        builder.Property(e => e.Author).HasMaxLength(256);
+        builder.Property(e => e.NormalizedAuthor).HasMaxLength(256);
 
         builder.HasIndex(e => e.Text).IsUnique();
 

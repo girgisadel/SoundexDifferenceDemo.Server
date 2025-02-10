@@ -44,17 +44,17 @@ public class QuotesController(ISender sender) : ControllerBase
             .ToIActionResultAndThrowOnFailure();
     }
 
-    [HttpGet("Author-Soundex-Filter")]
-    public async Task<IActionResult> SoundexFilterQuotesAsync([FromQuery] FilterRequest command)
-    {
-        return (await sender.Send(command.AsSoundexFilterQuotesCommand()))
-            .ToIActionResultAndThrowOnFailure();
-    }
-
     [HttpGet("Fts-Text-Filter")]
     public async Task<IActionResult> FreeTextSearchFilterQuotesAsync([FromQuery] FilterRequest command)
     {
         return (await sender.Send(command.AsFreeTextSearchFilterQuotesCommand()))
+            .ToIActionResultAndThrowOnFailure();
+    }
+
+    [HttpGet("Author-Soundex-Filter")]
+    public async Task<IActionResult> SoundexFilterQuotesAsync([FromQuery] FilterRequest command)
+    {
+        return (await sender.Send(command.AsSoundexFilterQuotesCommand()))
             .ToIActionResultAndThrowOnFailure();
     }
 }
