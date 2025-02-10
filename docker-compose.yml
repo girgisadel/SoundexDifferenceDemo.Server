@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  soundexdifferencedemo.webapi:
+    image: ${DOCKER_REGISTRY-}soundexdifferencedemowebapi
+    build:
+      context: .. 
+      dockerfile: SoundexDifferenceDemo.Server/SoundexDifferenceDemo.WebApi/Dockerfile
+    depends_on:
+      - sqlserver
+
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "YourStrongPassword123!"
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: "Developer"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
