@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundexDifferenceDemo.Infra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoundexDifferenceDemo.Persistence", "SoundexDifferenceDemo.Persistence\SoundexDifferenceDemo.Persistence.csproj", "{4F020AD3-0D0E-4D69-82B7-7CCCC4E22844}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{93095228-28A5-4EB2-9B8F-4841AA887293}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "soundexdifferencedemo.client", "..\soundexdifferencedemo.client\soundexdifferencedemo.client.esproj", "{2D3AB20F-AE19-4908-B4A8-0F717452A53C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +49,12 @@ Global
 		{4F020AD3-0D0E-4D69-82B7-7CCCC4E22844}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F020AD3-0D0E-4D69-82B7-7CCCC4E22844}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F020AD3-0D0E-4D69-82B7-7CCCC4E22844}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93095228-28A5-4EB2-9B8F-4841AA887293}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93095228-28A5-4EB2-9B8F-4841AA887293}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93095228-28A5-4EB2-9B8F-4841AA887293}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93095228-28A5-4EB2-9B8F-4841AA887293}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D3AB20F-AE19-4908-B4A8-0F717452A53C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
