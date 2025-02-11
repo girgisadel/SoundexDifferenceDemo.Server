@@ -4,7 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<SpaRoot>..\..\soundexdifferencedemo.client</SpaRoot>
+	<SpaRoot>..\soundexdifferencedemo.client</SpaRoot>
 	<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
 	<SpaProxyServerUrl>https://localhost:50279</SpaProxyServerUrl>
   </PropertyGroup>
