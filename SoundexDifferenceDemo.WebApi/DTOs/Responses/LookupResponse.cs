@@ -1,13 +1,7 @@
 ﻿namespace SoundexDifferenceDemo.WebApi.DTOs.Responses;
 
-public class LookupResponse<T>
+public class LookupResponse<TKey, TValue>(TKey key, TValue value)
 {
-    public T Key { get; set; }
-    public T Value { get; set; }
-
-    public LookupResponse(T key, T value)
-    {
-        Key = key;
-        Value = value;
-    }
+    public TKey Key { get; set; } = key;
+    public TValue Value { get; set; } = value;
 }

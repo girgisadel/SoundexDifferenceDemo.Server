@@ -15,13 +15,13 @@ public class LookupsController(IQuoteManager<Quote> manager) : ControllerBase
     [HttpGet("Page-Size-Values")]
     public IActionResult GetPageSizeValues()
     {
-        return Ok(Constants.PageSizeValues.Select(v => new LookupResponse<int>(v, v)));
+        return Ok(Constants.PageSizeValues.Select(v => new LookupResponse<int, int>(v, v)));
     }
 
     [HttpGet("Order-By-Values")]
     public IActionResult GetOrderByValuesValues()
     {
-        return Ok(Constants.Quotes.OrderByValues.Select(v => new LookupResponse<string>(v, v)));
+        return Ok(Constants.Quotes.OrderByValues.Select(v => new LookupResponse<string, string>(v, v)));
     }
 
     [HttpGet("Authors")]
@@ -50,6 +50,6 @@ public class LookupsController(IQuoteManager<Quote> manager) : ControllerBase
 
         var items = await manager.DeferredGetAuthorsByAuthorSoundexAsync(searchTerm).Distinct().ToListAsync();
 
-        return Ok(items.Select(e => new LookupResponse<string>(e!, e!)).ToList());
+        return Ok(items.Select(e => new LookupResponse<string, string>(e!, e!)).ToList());
    }
 }

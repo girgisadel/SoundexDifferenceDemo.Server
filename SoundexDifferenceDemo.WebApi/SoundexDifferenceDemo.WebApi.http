@@ -1,0 +1,53 @@
+﻿@SoundexDifferenceDemo.WebApi_HostAddress = https://localhost:7095
+
+@searchTerm=string
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/lookups/Authors?searchTerm={{searchTerm}}
+
+###
+
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/lookups/Order-By-Values
+
+###
+
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/lookups/Page-Size-Values
+
+###
+
+POST {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes
+Content-Type: application/json
+
+{
+  //CreateQuoteCommand
+}
+
+###
+
+PUT {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes
+Content-Type: application/json
+
+{
+  //UpdateQuoteCommand
+}
+
+###
+
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes/Author-Soundex-Filter
+
+###
+
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes/Fts-Text-Filter
+
+###
+
+@id=string
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes/Get-By-Id/{{id}}
+
+###
+
+GET {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes/Normal-Text-Filter
+
+###
+
+DELETE {{SoundexDifferenceDemo.WebApi_HostAddress}}/api/quotes/{{id}}
+
+###

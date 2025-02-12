@@ -61,7 +61,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger, IWeb
 
     private async Task HandleBusinessExceptionAsync(HttpContext httpContext, BusinessException exception, string correlationId, CancellationToken cancellationToken = default)
     {
-        logger.LogError(exception, "Validation Exception.");
+        logger.LogError(exception, "Business Exception.");
 
         httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         httpContext.Response.ContentType = "application/problem+json";
